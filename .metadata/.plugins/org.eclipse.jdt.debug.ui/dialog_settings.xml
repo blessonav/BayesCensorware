@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="82" key="org.eclipse.jdt.debug.ui.jre_preference_page_context.columnWidth2"/>
+	<item value="1" key="org.eclipse.jdt.debug.ui.jre_preference_page_context.sortColumn"/>
+	<item value="241" key="org.eclipse.jdt.debug.ui.jre_preference_page_context.columnWidth1"/>
+	<item value="190" key="org.eclipse.jdt.debug.ui.jre_preference_page_context.columnWidth0"/>
+	<section name="conditionHistory">
+		<item value="2" key="conditionHistoryEntryCount"/>
+		<item value="!urlString.contains(&quot;detectportal.firefox.com&quot;)" key="conditionHistoryEntry_0"/>
+		<item value="!requestString.contains(&quot;detectportal.firefox.com&quot;)" key="conditionHistoryEntry_1"/>
+	</section>
+	<section name="org.eclipse.jdt.internal.debug.ui.ExpressionInformationControlCreator$ExpressionInformationControl">
+		<item value="791" key="SashWeightTree"/>
+		<item value="208" key="SashWeightDetails"/>
+		<item value="608" key="WIDTH"/>
+		<item value="194" key="HEIGHT"/>
+	</section>
+</section>

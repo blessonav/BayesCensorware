@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;bayes.TextParser&apos; to &apos;TextParser_obsolete&apos;&#x0A;- Original project: &apos;naive-bayesian-spam-filter-master&apos;&#x0A;- Original element: &apos;bayes.TextParser&apos;&#x0A;- Renamed element: &apos;bayes.TextParser_obsolete&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;TextParser&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/spam-filter\/src&lt;bayes{TextParser.java[TextParser" matchStrategy="1" name="TextParser_obsolete" qualified="false" references="true" similarDeclarations="false" stamp="1523289789755" textual="false" version="1.0"/>
+</session>

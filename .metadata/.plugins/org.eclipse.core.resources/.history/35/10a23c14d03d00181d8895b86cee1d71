@@ -1,0 +1,260 @@
+package bayes;
+
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.WriteAbortedException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
+public class ManualTrainingEngine {
+
+	
+	
+	static List<Word> words = new ArrayList<Word>();
+	public static List<Site> recentSites=new ArrayList<Site>();
+	public static List<Site> sitesundertest=new ArrayList<Site>();
+	BufferedWriter out;
+	private volatile boolean running = true, insideinit = true;
+	public static Thread thread = null;
+	
+	
+	
+	public static void main(String[] args) {
+		 Scanner scanner=new Scanner(System.in);
+		poplulatewordsfromblocked();
+		
+		
+		while(true) {
+		System.out.println();
+   	 
+    	System.out.println("Enter Your Choice:");
+    	System.out.println("-------------------------------------------");
+        System.out.println("1)Add an entry to blacklist");
+        System.out.println("2)Remove an entry from Blacklist ");
+        System.out.println("3)Search for an Entry in blacklist");
+        System.out.println("4)Write blacklist to blacklist.txt");
+        System.out.println("5)Terminate");
+        System.out.println("--------------------------------------------");
+        switch(Integer.parseInt(scanner.nextLine()))
+        {
+        case 1:
+        	System.out.println("Enter word");
+        	String w=scanner.nextLine();
+        	System.out.println("Enter probabilty");
+        	Float f=Float.parseFloat(scanner.nextLine());
+            words.add(new Word(w,f));
+            
+        case 2:
+        	System.out.println("Enter word");
+        	w=scanner.nextLine();
+        	removeWord(words, w);
+            break;
+        case 3:
+        	System.out.println("Enter word");
+        	scanner.nextLine();
+        	w=scanner.nextLine();
+        	if(containsWord(words, w))
+        	{	Word wrd=getWord(words, w);
+        		System.out.println("Word found with degree of harmness :" +wrd.getProbOfHarmful());	
+        	}
+        	else
+        	{System.out.println("Word not found"); 
+        	}	
+        	break;
+        case 4:
+            writetoblacklist();
+            System.out.println("Blacklist wrote to blcklist.txt"); 
+            break;
+        case 5:
+        	System.out.println("Exitting....."); 
+            System.exit(0);    
+       
+        }
+    }}
+
+		public static void writetoblock()
+		{
+
+				File file = new File("blocked");
+				while (file.exists())
+					file.delete();
+
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					FileOutputStream f;
+					f = new FileOutputStream(file);
+					ObjectOutputStream s;
+					s = new ObjectOutputStream(f);
+					for (Word key : words) {
+						if(key!=null) {
+							s.writeObject(key);
+					}}
+
+					s.close();
+				
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+		
+		public static void writetoblacklist()
+		{
+
+				File file = new File("blacklist.txt");
+				while (file.exists())
+					file.delete();
+
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				try {
+					 FileOutputStream File = new FileOutputStream("blacklist.txt");
+		                
+		             String input="";
+		               
+					for (Word key : words) {
+						if(key!=null) {
+							 input += "(" + key.getWord() +"," +key.getProbOfHarmful()+")"+'\n';
+						}}	 
+							 
+							File.write(input.getBytes());
+							 File.close();
+				
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+
+			
+
+	public static void poplulatewordsfromblocked() {
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("blocked");
+
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			while (true) {
+				Word result = null;
+				try {
+					result = (Word) ois.readObject();
+				} catch (EOFException exc) {
+					break;
+				}
+				if (result != null)
+				{
+					
+					if (!containsWord(words,result.getWord())) {
+								words.add( result);
+				}}
+			}
+			ois.close();
+			
+			
+			
+			
+				fis = new FileInputStream("recentsites");
+
+				try{
+					ois = new ObjectInputStream(fis);
+				}
+				catch(Exception ex)
+				{
+					return;
+				}
+				while (true) {
+					Site result = null;
+					try {
+						result = (Site) ois.readObject();
+					} catch (EOFException exc) {
+						break;
+					}
+					if (result != null)
+					{
+						long diff = new Date().getTime() - result.accessDate.getTime();
+						long days=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+						if(days<2)
+						{
+							
+							
+							
+							
+							String ur=result.url;
+							recentSites.removeIf(obj -> obj.url.equalsIgnoreCase(ur));
+							recentSites.add( result);
+						
+						
+						}
+					}
+					
+				}
+				ois.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			
+				e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static boolean containsWord( List<Word> list, String name){
+		for(Word o : list) {
+	        if(o != null && o.getWord().equalsIgnoreCase(name)) {
+	            return true;
+	        }
+	    }
+	    return false;
+
+}
+	public static Word getWord( List<Word> list, String name){
+		for(Word o : list) {
+	        if(o != null && o.getWord().equalsIgnoreCase(name)) {
+	            return o;
+	        }
+	    }
+	    return null;
+
+}
+	
+	
+	
+	public static List<Word> removeWord( List<Word> list, String name){
+		
+		list.removeIf(s-> s.getWord().equalsIgnoreCase(name));
+		/*for(Word o : list) {
+	        if(o != null && o.getWord().equalsIgnoreCase(name)) {
+	        	list.remove(o);
+	        	
+	        }*/
+	    
+	    return list;
+
+}
+	
+}

@@ -1,0 +1,39 @@
+1523411423120	Delete element
+1523468594710	Delete element
+1523468612170	Delete element
+1523468629690	Delete element
+1523468659183	Delete element
+1523468664059	Delete element
+1523468719626	Move compilation unit
+1523468732683	Delete element
+1523468801478	Delete elements
+1523468857640	Delete element
+1523468957272	Delete element
+1523469019009	Delete elements
+1523469057425	Delete element
+1523469327000	Delete element
+1523469346986	Delete element
+1523469540032	Delete element
+1523470200252	Rename type 'ClassicPcapExample'
+1523474511115	Rename type 'DriverClass'
+1523474661189	Rename type 'Bayes'
+1523474693016	Rename type 'WebRes'
+1523476318506	Rename field 'spamRate'
+1523476350175	Rename field 'harmCount'
+1523476370839	Rename field 'spamCount'
+1523476404902	Rename field 'harmCount'
+1523476412650	Rename field 'harmRate'
+1523476423207	Rename field 'hamCount'
+1523476441255	Rename field 'harCoumlessnt'
+1523476472244	Rename field 'hamRate'
+1523476488185	Rename field 'probOfSpam'
+1523476596628	Rename method 'getHamCount'
+1523476618707	Rename method 'getSpamCount'
+1523476651458	Rename method 'countSpam'
+1523476673396	Rename method 'countHam'
+1523476704926	Rename method 'getSpamRate'
+1523476724145	Rename method 'getHamRate'
+1523476754491	Rename method 'setHamRate'
+1523476777538	Rename method 'getProbOfSpam'
+1523476794652	Rename method 'setProbOfSpam'
+1523477118926	Rename compilation unit 'ManualTraining.java'

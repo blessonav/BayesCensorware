@@ -1,0 +1,183 @@
+package bayes;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class Bayes {
+	static HashMap<String, Word> words = new HashMap<String,Word>();
+	BufferedWriter out;
+	
+	public static void main(String[] args) {
+		try {
+			Bayes run = new Bayes();
+		if(words.isEmpty())
+			run.initialtraining(args[0]);	
+		String domain="https://movieweb.com/";
+		if(words.containsKey(domain.replaceAll("\\W", "").toLowerCase())){
+		{	 Word w = (Word) words.get(domain.replaceAll("\\W", "").toLowerCase());
+			 if(w.getProbOfSpam()>=0.9f)
+				 return;
+		}
+		}
+		
+		
+			//run.filter(args[1]);
+		String pageContent=WebRes.getWebContent(domain);
+		if(pageContent.equals(domain))
+		{	
+			System.out.println("Cant read");
+			return;
+		}	float totalProbability=run.calculateBayesPage(pageContent);
+			if(totalProbability>0.9f)
+			{
+				
+				domain= domain.replaceAll("\\W", "");
+				domain = domain.toLowerCase();
+				//toDelete = new Set(['abc', 'efg']);
+			//	newArray = arrayOfObjects.filter(obj => !toDelete.has(obj.id));
+				Word w = new Word(domain);
+				w.setHamRate(0);
+				w.setSpamRate(1);
+				w.setSpamCount(1);
+				w.setHamCount(0);
+				w.setProbOfSpam(totalProbability);
+				words.put(domain,w);
+				System.out.println("BLOCKED");
+			}
+			else
+			{	
+				System.out.println("NOT BLOCKED");
+				domain= domain.replaceAll("\\W", "");
+				domain = domain.toLowerCase();
+				//toDelete = new Set(['abc', 'efg']);
+			//	newArray = arrayOfObjects.filter(obj => !toDelete.has(obj.id));
+				words.remove(domain);
+			}	
+		} catch (IOException e) {
+			System.out.println("AN ERROR HAS OCCURED");
+		}		
+	}
+	
+	//uses a train-file to make a hashmap containing all words, and their probability of being spam
+	public void initialtraining(String input) throws IOException{
+		int totalSpamCount = 0;
+		int totalHamCount = 0;
+		BufferedReader in = new BufferedReader(new FileReader(input));
+		String line = in.readLine();
+		while (line != null){
+			if (!line.equals("")){
+				String type = line.split("\t")[0];
+				String sms = line.split("\t")[1];				
+				for (String word : sms.split(" ")){
+					word = word.replaceAll("\\W", "");
+					word = word.toLowerCase();
+					Word w = null;
+					if(words.containsKey(word)){
+						w = (Word) words.get(word);
+					}
+					else {
+						w = new Word(word);
+						words.put(word,w);
+					}
+					if(type.equals("ham")){
+						w.countHam();
+						totalHamCount++;
+					}
+					else if(type.equals("spam")){
+						w.countSpam();
+						totalSpamCount++;
+					}		
+				}
+			}
+			line = in.readLine();	
+		}
+		in.close();
+		
+		for (String key : words.keySet()) {
+		    words.get(key).calculateProbability(totalSpamCount, totalHamCount);
+		}
+	}
+	
+	//Takes the text to be analyzes as input, and produces predictions by form of 'spam' or 'ham'
+	public void filter(String inputFile) throws IOException{
+		BufferedReader in = new BufferedReader(new FileReader(inputFile));
+		this.out = new BufferedWriter(new FileWriter("predictions.txt"));
+		String line = in.readLine();
+		while (line != null){
+			if (!line.equals("")){
+				ArrayList<Word> sms = makeWordList(line);
+				boolean isSpam = calculateBayes(sms);
+				if(isSpam == true) this.out.write("spam");
+				else if (isSpam == false) this.out.write("ham");
+			}
+			this.out.newLine();
+			line = in.readLine();
+		}
+		this.out.close();
+		in.close();
+	}
+
+	//make an arraylist of all words in an sms, set probability of spam to 0.4 if word is not known
+	public ArrayList<Word> makeWordList(String sms){
+		ArrayList<Word> wordList = new ArrayList<Word>();
+		for (String word : sms.split(" ")){
+			word = word.replaceAll("\\W", "");
+			word = word.toLowerCase();
+			Word w = null;
+			if(words.containsKey(word)){
+				w = (Word) words.get(word);
+			}
+			else {
+				w = new Word(word);
+				w.setProbOfSpam(0.40f);
+			}
+			wordList.add(w);
+		}
+		return wordList;
+	}
+	
+	//Applying Bayes rule and calculating probability of ham or spam. Return true if spam, false if ham
+	public boolean calculateBayes(ArrayList<Word> sms){
+		float probabilityOfPositiveProduct = 1.0f;
+		float probabilityOfNegativeProduct = 1.0f;
+		for (int i = 0; i < sms.size(); i++) {
+			Word word = (Word) sms.get(i);
+			probabilityOfPositiveProduct *= word.getProbOfSpam();
+			probabilityOfNegativeProduct *= (1.0f - word.getProbOfSpam());
+		}
+		float probOfSpam = probabilityOfPositiveProduct / (probabilityOfPositiveProduct + probabilityOfNegativeProduct);
+		if(probOfSpam > 0.9f) return true;
+		else return false;
+	}		
+
+
+
+
+public float calculateBayesPage(String PageContent){
+	int noOfSentences=0;
+	float probOfSpam =0, totalProbability=0;
+	for(String line: PageContent.split("\n"))
+	{
+		if (!line.equals("")){
+			noOfSentences++;
+			ArrayList<Word> sms = makeWordList(line);	
+	float probabilityOfPositiveProduct = 1.0f;
+	float probabilityOfNegativeProduct = 1.0f;
+	for (int i = 0; i < sms.size(); i++) {
+		Word word = (Word) sms.get(i);
+		probabilityOfPositiveProduct *= word.getProbOfSpam();
+		probabilityOfNegativeProduct *= (1.0f - word.getProbOfSpam());
+	}
+	probOfSpam = probabilityOfPositiveProduct / (probabilityOfPositiveProduct + probabilityOfNegativeProduct);
+	}
+	totalProbability=totalProbability+probOfSpam;	
+	}
+	totalProbability/=noOfSentences;
+	return totalProbability;
+}		
+}

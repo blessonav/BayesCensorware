@@ -1,0 +1,22 @@
+package jnetpcapDemo;
+
+
+
+public class Test {
+	
+  static {
+    try {
+    	//System.load("jnetpcap");
+    	System.load("/home/kvl/Downloads/jnetpcap-1.4.b0004-1/libjnetpcap.so.1.4.b0004");
+    } catch (UnsatisfiedLinkError e) {
+      System.err.println("Native code library failed to load.\n" + e);
+      System.exit(1);
+    }
+  }
+
+  public static void main(String argv[]) 
+  {
+    
+    System.out.println("Loaded");    
+  }
+}

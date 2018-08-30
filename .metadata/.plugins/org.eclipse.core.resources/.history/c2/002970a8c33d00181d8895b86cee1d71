@@ -1,0 +1,200 @@
+package bayes;
+
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.WriteAbortedException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class ManualTraining {
+
+	
+	
+	static List<Word> words = new ArrayList<Word>();
+	public static List<Site> recentSites=new ArrayList<Site>();
+	public static List<Site> sitesundertest=new ArrayList<Site>();
+	BufferedWriter out;
+	private volatile boolean running = true, insideinit = true;
+	public static Thread thread = null;
+	public static boolean terminate=false;
+
+		while (terminate) {
+			if (words != null && !words.isEmpty()) {
+				List<Word> wordslocal = words;
+
+				File file = new File("blocked");
+				while (file.exists())
+					file.delete();
+
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					FileOutputStream f;
+					f = new FileOutputStream(file);
+					ObjectOutputStream s;
+					s = new ObjectOutputStream(f);
+					for (Word key : wordslocal) {
+						if(key!=null) {
+							s.writeObject(key);
+					}}
+
+					s.close();
+					Thread.sleep(10000);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+		
+
+			if (recentSites != null && !recentSites.isEmpty()) {
+				List<Site> recentSiteslocal = recentSites;
+
+				File file = new File("recentsites");
+				while (file.exists())
+					file.delete();
+
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					FileOutputStream f;
+					f = new FileOutputStream(file);
+					ObjectOutputStream s;
+					s = new ObjectOutputStream(f);
+					for (Site key : recentSiteslocal) {
+						if(key!=null) {
+						long diff = new Date().getTime() - key.accessDate.getTime();
+						long days=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+						if(days>=2)
+						{	
+							recentSiteslocal.remove(key);
+							recentSites.remove(key);
+							
+						}
+						else {
+							s.writeObject(key);
+						}
+						}}
+
+					s.close();
+					Thread.sleep(10000);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+		
+		
+		}
+	}
+
+	public static void poplulatewordsfromblocked() throws IOException {
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("blocked");
+
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			while (true) {
+				Word result = null;
+				try {
+					result = (Word) ois.readObject();
+				} catch (EOFException exc) {
+					break;
+				}
+				if (result != null)
+				{
+					
+					if (!containsWord(words,result.getWord())) {
+								words.add( result);
+				}}
+			}
+			ois.close();
+			
+			
+			
+			
+				fis = new FileInputStream("recentsites");
+
+				try{
+					ois = new ObjectInputStream(fis);
+				}
+				catch(Exception ex)
+				{
+					return;
+				}
+				while (true) {
+					Site result = null;
+					try {
+						result = (Site) ois.readObject();
+					} catch (EOFException exc) {
+						break;
+					}
+					if (result != null)
+					{
+						long diff = new Date().getTime() - result.accessDate.getTime();
+						long days=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+						if(days<2)
+						{
+							
+							
+							
+							
+							String ur=result.url;
+							recentSites.removeIf(obj -> obj.url.equalsIgnoreCase(ur));
+							recentSites.add( result);
+						
+						
+						}
+					}
+					
+				}
+				ois.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			if (e instanceof WriteAbortedException) {
+				throw e;
+
+			}
+			if (e instanceof EOFException) {
+				throw e;
+
+			}
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	
+	
+}

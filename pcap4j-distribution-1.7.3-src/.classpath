@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="pcap4j-core/src/main/java"/>
+	<classpathentry kind="src" path="pcap4j-core/src/test/java"/>
+	<classpathentry kind="src" path="pcap4j-packetfactory-propertiesbased/src/main/java"/>
+	<classpathentry kind="src" path="pcap4j-packetfactory-static/src/main/java"/>
+	<classpathentry kind="src" path="pcap4j-packettest/src/test/java"/>
+	<classpathentry kind="src" path="pcap4j-sample/src/main/java"/>
+	<classpathentry kind="lib" path="pcap4j-1.7.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="pcap4j-core-1.7.3.jar"/>
+	<classpathentry kind="lib" path="pcap4j-packetfactory-propertiesbased-1.7.3.jar"/>
+	<classpathentry kind="lib" path="pcap4j-packetfactory-static-1.7.3.jar"/>
+	<classpathentry kind="lib" path="pcap4j-packettest-1.7.3-tests.jar"/>
+	<classpathentry kind="lib" path="pcap4j-sample-1.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/slf4j.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/logback-core-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/logback-classic-1.0.0.jar.zip"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/jna-4.1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

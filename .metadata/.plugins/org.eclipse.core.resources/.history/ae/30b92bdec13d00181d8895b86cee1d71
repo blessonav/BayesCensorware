@@ -1,0 +1,114 @@
+package bayes;
+
+import java.io.Serializable;
+
+public class Word implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String word;	//the word itself
+	private int spamCount;	//number of this words appearances in spam messages
+	private int hamCount;	//number of this words appearances in ham messages
+	private float harmCount;	//spamCount divided by total spam count
+	private float hamRate;	//hamCount divided by total ham count
+	private float probOfSpam;	//probability of word being spam
+	
+	public Word(String word){
+		this.word = word;
+		spamCount = 0;
+		hamCount = 0;
+		harmCount = 0.0f;
+		hamRate = 0.0f;
+		probOfSpam = 0.0f;	
+	}
+	
+	public Word(String word,float probOfSpam){
+		this.word = word;
+		this.probOfSpam = probOfSpam;	
+	}
+	public int getHamCount() {
+		return hamCount;
+	}public int getSpamCount() {
+		return spamCount;
+	}public void setWord(String word) {
+		this.word = word;
+	}public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public void countSpam(){
+		spamCount++;
+	}
+	
+	public void countHam(){
+		hamCount++;
+	}
+	
+	//calculates the probability of spam, 
+	//and gives the smallest and biggest probabilities more precedence
+	public void calculateProbability(int totSpam, int totHam){
+		harmCount = spamCount / (float) totSpam;
+		hamRate = hamCount / (float) totHam;
+		
+		if(harmCount + hamRate > 0){
+			probOfSpam = harmCount / (harmCount + hamRate);
+		}
+		if(probOfSpam < 0.01f){
+			probOfSpam = 0.01f;
+		}
+		else if(probOfSpam > 0.99f){
+			probOfSpam = 0.99f;
+		}
+	}
+
+	
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+	    // TODO Auto-generated method stub
+	    if(obj instanceof Word)
+	    {
+	    	Word temp = (Word) obj;
+	        if(this.getWord()!=null && temp.getWord()!=null && (this.getWord().equalsIgnoreCase(temp.getWord())))
+	            return true;
+	    }
+	    return false;
+
+	}
+	
+	
+	public String getWord() {
+		return word;
+	}
+
+	public float getSpamRate() {
+		return harmCount;
+	}
+
+	public float getHamRate() {
+		return hamRate;
+	}
+
+	public void setHamRate(float hamRate) {
+		this.hamRate = hamRate;
+	}
+
+	public float getProbOfSpam() {
+		return probOfSpam;
+	}
+
+	public void setProbOfSpam(float probOfSpam) {
+		this.probOfSpam = probOfSpam;
+	}
+	
+	public void setHamCount(int hamCount) {
+		this.hamCount = hamCount;
+	}
+	public void setSpamCount(int spamCount) {
+		this.spamCount = spamCount;
+	}
+	public void setSpamRate(float spamRate) {
+		this.harmCount = spamRate;
+	}
+}

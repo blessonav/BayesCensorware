@@ -1,0 +1,306 @@
+package bayes;
+
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.WriteAbortedException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class ManualTrainingEngine {
+
+	
+	public static boolean terminate=false;
+	static List<Word> words = new ArrayList<Word>();
+	public static List<Site> recentSites=new ArrayList<Site>();
+	public static List<Site> sitesundertest=new ArrayList<Site>();
+	BufferedWriter out;
+	private volatile boolean running = true, insideinit = true;
+	public static Thread thread = null;
+	
+	
+	
+	public static void main(String[] args) {
+		
+		
+		
+		System.out.println();
+   	 
+    	System.out.println("Enter Your Choice:");
+    	System.out.println("-------------------------------------------");
+        System.out.println("1)Add an entry to blacklist");
+        System.out.println("2)Remove an entry from Blacklist ");
+        System.out.println("3)Search for an Entry in lacklist");
+        System.out.println("4)Write blacklist to blacklist.txt");
+        System.out.println("--------------------------------------------");
+        switch(scanner.nextInt())
+        {
+        case 1:
+            words.ass
+        case 2:
+        	fh.min = fh.extractMin(fh);
+            fh.displayHeap(fh.min);
+            break;
+        case 3:
+            System.out.println("Enter the key to be decreased: ");
+            element=scanner.nextInt();;
+            System.out.println("Enter new key value: ");
+             newKey=scanner.nextInt();
+             fh = fh.decKey(fh, element, newKey);
+             break;
+        case 4:
+            System.out.println("Enter the key to be deleted: ");
+            element=scanner.nextInt();;
+            fh.min = fh.deleteKey(fh, element);
+            break;
+        case 5:
+            System.out.println("The Heap is: ");
+            fh.displayHeap(fh.min);
+            System.out.println();
+            break;
+        case 6 : 
+        	fibonacci b=new fibonacci();
+        	  b.min=b.insertNode(b.min, 1);
+        	  b.min=b.insertNode(b.min, 2);
+        	  b.min=b.min=b.insertNode(b.min, 3);
+        	  b.min=b.insertNode(b.min, 4);
+        	  b.min=b.insertNode(b.min, 5);
+        	  b.min=b.insertNode(b.min, 6);
+        	  b.min=b.insertNode(b.min, 7);
+        	  b.min = b.extractMin(b);
+        	  fibonacci b2=new fibonacci();
+        	  b2.min=b2.insertNode(b2.min, -1);
+        	  b2.min=b2.insertNode(b2.min, -2);
+        	  b2.min=b2.insertNode(b2.min, -3);
+        	  b2.min=b2.insertNode(b2.min, -4);
+        	  b2.min=b2.insertNode(b2.min, -5);
+        	  b2.min=b2.insertNode(b2.min, -6);
+        	  b2.min=b2.insertNode(b2.min, -7);
+        	  //b.min=b.extractMin(b);
+        	  //b2.min=b2.extractMin(b2);
+        	  b2.min = b2.extractMin(b2);
+        	  b.displayHeap(b.min);
+        	  b2.displayHeap(b2.min);
+        	  b=b.union(b, b2);
+        	  System.out.println("\nTwo heaps unioned. Final heap is :");
+        	  b.displayHeap(b.min);
+        	  break;
+
+        case 7:
+        	System.out.println("System Exitting");
+        	System.exit(0);
+        	break;
+        default:
+            System.out.println("Wrong Choice");
+        }
+    }
+
+		while (terminate) {
+			if (words != null && !words.isEmpty()) {
+				List<Word> wordslocal = words;
+
+				File file = new File("blocked");
+				while (file.exists())
+					file.delete();
+
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					FileOutputStream f;
+					f = new FileOutputStream(file);
+					ObjectOutputStream s;
+					s = new ObjectOutputStream(f);
+					for (Word key : wordslocal) {
+						if(key!=null) {
+							s.writeObject(key);
+					}}
+
+					s.close();
+					Thread.sleep(10000);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+		
+
+			if (recentSites != null && !recentSites.isEmpty()) {
+				List<Site> recentSiteslocal = recentSites;
+
+				File file = new File("recentsites");
+				while (file.exists())
+					file.delete();
+
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					FileOutputStream f;
+					f = new FileOutputStream(file);
+					ObjectOutputStream s;
+					s = new ObjectOutputStream(f);
+					for (Site key : recentSiteslocal) {
+						if(key!=null) {
+						long diff = new Date().getTime() - key.accessDate.getTime();
+						long days=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+						if(days>=2)
+						{	
+							recentSiteslocal.remove(key);
+							recentSites.remove(key);
+							
+						}
+						else {
+							s.writeObject(key);
+						}
+						}}
+
+					s.close();
+					Thread.sleep(10000);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		
+		
+		
+		}
+	}
+
+	public static void poplulatewordsfromblocked() throws IOException {
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("blocked");
+
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			while (true) {
+				Word result = null;
+				try {
+					result = (Word) ois.readObject();
+				} catch (EOFException exc) {
+					break;
+				}
+				if (result != null)
+				{
+					
+					if (!containsWord(words,result.getWord())) {
+								words.add( result);
+				}}
+			}
+			ois.close();
+			
+			
+			
+			
+				fis = new FileInputStream("recentsites");
+
+				try{
+					ois = new ObjectInputStream(fis);
+				}
+				catch(Exception ex)
+				{
+					return;
+				}
+				while (true) {
+					Site result = null;
+					try {
+						result = (Site) ois.readObject();
+					} catch (EOFException exc) {
+						break;
+					}
+					if (result != null)
+					{
+						long diff = new Date().getTime() - result.accessDate.getTime();
+						long days=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+						if(days<2)
+						{
+							
+							
+							
+							
+							String ur=result.url;
+							recentSites.removeIf(obj -> obj.url.equalsIgnoreCase(ur));
+							recentSites.add( result);
+						
+						
+						}
+					}
+					
+				}
+				ois.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			if (e instanceof WriteAbortedException) {
+				throw e;
+
+			}
+			if (e instanceof EOFException) {
+				throw e;
+
+			}
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static boolean containsWord( List<Word> list, String name){
+		for(Word o : list) {
+	        if(o != null && o.getWord().equalsIgnoreCase(name)) {
+	            return true;
+	        }
+	    }
+	    return false;
+
+}
+	public static Word getWord( List<Word> list, String name){
+		for(Word o : list) {
+	        if(o != null && o.getWord().equalsIgnoreCase(name)) {
+	            return o;
+	        }
+	    }
+	    return null;
+
+}
+	
+	
+	
+	public static List<Word> removeWord( List<Word> list, String name){
+		for(Word o : list) {
+	        if(o != null && o.getWord().equalsIgnoreCase(name)) {
+	        	list.remove(o);
+	        	
+	        }
+	    }
+	    return list;
+
+}
+	
+}

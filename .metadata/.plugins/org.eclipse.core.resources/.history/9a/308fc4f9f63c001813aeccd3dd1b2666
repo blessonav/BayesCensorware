@@ -1,0 +1,66 @@
+package bayes;
+
+import java.util.Iterator;
+
+public class DriverClass implements Runnable {
+	public static String dom;
+	public static Thread thread=null;
+	public void driver(String domain)
+	{
+		
+		
+		dom=domain;
+		thread=new Thread(this);
+		thread.start();
+		
+	}
+	@Override
+	public void run() {
+		try {
+			
+			if(dom==null)
+				return;
+	/*		System.out.println("----------------------------------------------");
+			System.out.println("Going to call Checkdomain on "+dom);
+			System.out.println("----------------------------------------------");
+		*/Bayes.checkDomain(dom);
+		
+		for(Iterator<Site> iterator = Bayes.sitesundertest.iterator(); iterator.hasNext(); ) {
+			{  Site s=  iterator.next();
+				if(s.url.equalsIgnoreCase(dom))
+					iterator.remove();
+			 }	
+			}} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	
+	public boolean isUnderTesting(String domain)
+	{
+		for(Iterator<Site> iterator = Bayes.sitesundertest.iterator(); iterator.hasNext(); ) 
+		{  Site s=  iterator.next();
+				if(s.url.equalsIgnoreCase(domain))
+				{		return true;
+				}		
+			}
+		return false;
+		}
+	
+	
+		
+
+
+	public float HaveTested(String domain)
+	{
+		for(Iterator<Site> iterator = Bayes.recentSites.iterator(); iterator.hasNext(); ) {
+			 Site s=  iterator.next();
+				if(s.url.equalsIgnoreCase(domain))
+				{		return s.probability;
+						
+				}		
+			}
+			return -1.0f;
+		
+	}
+}

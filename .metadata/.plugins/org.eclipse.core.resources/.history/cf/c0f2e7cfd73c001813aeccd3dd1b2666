@@ -1,0 +1,29 @@
+package bayes;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+public class WebRes {
+	
+public static String getWebContent(String domain) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
+	
+		java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF); 
+		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+	WebClient webClient =new WebClient(BrowserVersion.BEST_SUPPORTED);
+	//webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+	webClient.getOptions().setJavaScriptEnabled(false);
+	HtmlPage page=webClient.getPage(domain);
+	String pageContent = page.asText();
+	webClient.close();
+	return pageContent;
+	
+	
+	
+	}
+}

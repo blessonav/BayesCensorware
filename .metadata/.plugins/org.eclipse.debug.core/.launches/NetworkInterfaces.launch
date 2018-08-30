@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/jnetpcapDemo/src/jnetpcapDemo/NetworkInterfaces.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="jnetpcapDemo.NetworkInterfaces"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jnetpcapDemo"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.library.path=D:\eclipse-workspace\jnetpcapDemo\jnetpcap-1.4.r1425"/>
+</launchConfiguration>

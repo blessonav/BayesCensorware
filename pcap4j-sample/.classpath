@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/BayesCensorware/src/pcap4j-packettest-1.7.3-tests.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/BayesCensorware/src/pcap4j-packetfactory-static-1.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/BayesCensorware/src/pcap4j-packetfactory-propertiesbased-1.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/BayesCensorware/src/pcap4j-core-1.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/BayesCensorware/src/pcap4j-1.7.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/BayesCensorware/src/jnetpcap.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/slf4j.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/logback.jar"/>
+	<classpathentry kind="lib" path="/home/kvl/eclipse-workspace/jna-4.1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,20 @@
+package bayes;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+public class WebRes {
+	
+public static void main(String[] args) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
+	WebClient webClient =new WebClient(BrowserVersion.CHROME);
+	webClient.getOptions().setJavaScriptEnabled(true);
+	HtmlPage page=webClient.getPage("http://bridgei2i.com/blog/extracting-data-from-webpages-in-java-with-help-of-htmlunit/");
+	String pageContent = page.asText();
+	System.out.println(pageContent);
+}
+}
